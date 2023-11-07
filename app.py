@@ -1,6 +1,11 @@
 import pickle
 import streamlit as st
 import requests
+import io
+
+# Define the URLs for movie data and similarity data
+movie_data_url = 'https://github.com/Avanish1202/Data-Science-/raw/main/movie_list.pkl'
+similarity_data_url = 'https://github.com/Avanish1202/Data-Science-/raw/main/similarity.pkl'
 
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
@@ -16,17 +21,27 @@ def recommend(movie):
     recommended_movie_names = []
     recommended_movie_posters = []
     for i in distances[1:6]:
-        # fetch the movie poster
+        # Fetch the movie poster
         movie_id = movies.iloc[i[0]].movie_id
         recommended_movie_posters.append(fetch_poster(movie_id))
         recommended_movie_names.append(movies.iloc[i[0]].title)
 
-    return recommended_movie_names,recommended_movie_posters
-
+    return recommended_movie_names, recommended_movie_posters
 
 st.header('Movie Recommender System')
-movies = pickle.load(open('model/movie_list.pkl','rb'))
-similarity = pickle.load(open('model/similarity.pkl','rb'))
+
+# Attempt to load the movie data from the URL
+response = requests.get(movie_data_url)
+if response.status_code == 200:
+    movies = pickle.load(io.BytesIO(response.content))
+    # Attempt to load the similarity data from the URL
+    response = requests.get(similarity_data_url)
+    if response.status_code == 200:
+        similarity = pickle.load(io.BytesIO(response.content))
+    else:
+        st.error("Failed to load similarity data. Please check the URL.")
+else:
+    st.error("Failed to load movie data. Please check the URL.")
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
@@ -35,7 +50,7 @@ selected_movie = st.selectbox(
 )
 
 if st.button('Show Recommendation'):
-    recommended_movie_names,recommended_movie_posters = recommend(selected_movie)
+    recommended_movie_names, recommended_movie_posters = recommend(selected_movie)
     col1, col2, col3, col4, col5 = st.beta_columns(5)
     with col1:
         st.text(recommended_movie_names[0])
@@ -53,7 +68,3 @@ if st.button('Show Recommendation'):
     with col5:
         st.text(recommended_movie_names[4])
         st.image(recommended_movie_posters[4])
-
-
-
-
