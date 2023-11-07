@@ -26,8 +26,8 @@ def recommend(movie):
 
 # Streamlit app
 st.header('Movie Recommender System')
-movies = pickle.load(open('movie_list.pkl', 'rb'))  # Adjust the file path as needed
-similarity = pickle.load(open('similarity.pkl', 'rb'))  # Adjust the file path as needed
+movies = pickle.load(open('https://github.com/Avanish1202/Data-Science-/blob/main/movie_list.pkl', 'rb'))  # Adjust the file path as needed
+similarity = pickle.load(open('https://github.com/Avanish1202/Data-Science-/blob/main/similarity.pkl', 'rb'))  # Adjust the file path as needed
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
