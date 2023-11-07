@@ -3,15 +3,6 @@ import streamlit as st
 import requests
 import io
 
-# Function to fetch the movie poster
-def fetch_poster(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=YOUR_API_KEY&language=en-US".format(movie_id)
-    data = requests.get(url)
-    data = data.json()
-    poster_path = data['poster_path']
-    full_path = "https://image.tmdb.org/t/p/w500" + poster_path
-    return full_path
-
 # Function to recommend movies
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
@@ -37,11 +28,10 @@ if response.status_code == 200:
 else:
     st.error("Failed to load movie data. Please check the URL.")
 
-# Download the similarity pickle file from GitHub
+# Load the similarity data
 similarity_url = 'https://github.com/Avanish1202/Data-Science-/raw/main/similarity.pkl'
 response = requests.get(similarity_url)
 if response.status_code == 200:
-    # Load the data using the io module
     similarity = pickle.load(io.BytesIO(response.content))
 else:
     st.error("Failed to load similarity data. Please check the URL.")
