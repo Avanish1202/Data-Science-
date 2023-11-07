@@ -25,16 +25,15 @@ response = requests.get(pickle_url)
 if response.status_code == 200:
     # Load the data using the io module
     movies = pickle.load(io.BytesIO(response.content))
+    # Load the similarity data
+    similarity_url = 'https://github.com/Avanish1202/Data-Science-/raw/main/similarity.pkl'
+    response = requests.get(similarity_url)
+    if response.status_code == 200:
+        similarity = pickle.load(io.BytesIO(response.content))
+    else:
+        st.error("Failed to load similarity data. Please check the URL.")
 else:
     st.error("Failed to load movie data. Please check the URL.")
-
-# Load the similarity data
-similarity_url = 'https://github.com/Avanish1202/Data-Science-/raw/main/similarity.pkl'
-response = requests.get(similarity_url)
-if response.status_code == 200:
-    similarity = pickle.load(io.BytesIO(response.content))
-else:
-    st.error("Failed to load similarity data. Please check the URL.")
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
