@@ -18,12 +18,20 @@ similarity_data_path = 'similarity.pkl'
 # Load movie data
 movie_data = fetch_data_from_file(movie_data_path)
 if movie_data:
-    movies = pickle.load(io.BytesIO(movie_data))
+    try:
+        movies = pickle.loads(movie_data)
+    except Exception as e:
+        st.error(f"Failed to load movie data from file: {movie_data_path}\nError: {e}")
+        movies = None
 
 # Load similarity data
 similarity_data = fetch_data_from_file(similarity_data_path)
 if similarity_data:
-    similarity = pickle.load(io.BytesIO(similarity_data))
+    try:
+        similarity = pickle.loads(similarity_data)
+    except Exception as e:
+        st.error(f"Failed to load similarity data from file: {similarity_data_path}\nError: {e}")
+        similarity = None
 
 
 # Define the Streamlit app
