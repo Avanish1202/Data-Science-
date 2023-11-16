@@ -13,8 +13,8 @@ def fetch_data_from_url(url):
         return None
 
 # Specify the URLs for movie data and similarity data
-movie_data_url = 'https://raw.githubusercontent.com/Avanish1202/Data-Science-/main/movie_list.pkl'
-similarity_data_url = 'https://raw.githubusercontent.com/Avanish1202/Data-Science-/main/similarity.pkl'
+movie_data_url = 'movie_list.pkl'
+similarity_data_url = 'similarity.pkl'
 
 # Load movie data
 movie_data = fetch_data_from_url(movie_data_url)
