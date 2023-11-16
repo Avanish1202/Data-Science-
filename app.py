@@ -33,7 +33,6 @@ if similarity_data:
         st.error(f"Failed to load similarity data from file: {similarity_data_path}\nError: {e}")
         similarity = None
 
-
 # Define the Streamlit app
 def main():
     st.header('Movie Recommender System')
